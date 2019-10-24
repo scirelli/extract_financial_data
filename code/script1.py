@@ -63,6 +63,7 @@ def main_process_image(show_edges=False):
     # Pre-Process Image
     img_read        = cv2.imread(path2image)
     img_gray        = cv2.cvtColor(img_read, cv2.COLOR_BGR2GRAY)
+    img_gray_orig   = img_gray.copy()
     img_blur        = cv2.GaussianBlur(img_gray, (9,9), 0)
     #cv2.imshow('test1', img_blur)
     img_threshold   = cv2.threshold(img_blur, 200,255 , cv2.THRESH_BINARY)[1]
@@ -102,14 +103,24 @@ def main_process_image(show_edges=False):
         # Show in a window
         cv2.imshow('Contours', drawing)
         cv2.waitKey(0)
-
    
-    img_read        = cv2.imread(path2image)
-    img_gray        = cv2.cvtColor(img_read, cv2.COLOR_BGR2GRAY)
-    img_blur        = cv2.GaussianBlur(img_gray, (9,9), 0)
-    cv2.drawContours(img_blur, contours, 3, (0,255,0), 3)
-    cv2.imshow('shit', img_blur)
-    cv2.waitKey(0)
+    # Iterate Through Bounding Boxes - OCR Text
+    for n in range(0, len(contours)):
+        (x, y, w, h) = cv2.boundingRect(contours[n])
+
+        top_left        = (x,y)
+        bottom_left     = (x, y-h)
+        top_right       = (x + w, y)
+        bottom_right    = (x + w, y-h)
+        
+        img_cropped     = img_gray_orig[y:y+h,x:x+w]
+      
+        cv2.imshow('test', img_cropped)
+        cv2.waitKey(0)
+        text = pytesseract.image_to_string(img_cropped)
+        print(text)
+
+    return None
 
 main_process_image(False)
 

@@ -104,7 +104,6 @@ def get_far_left_pixel(img):
                     break
    
     # Return value
-    print('Farthest left col => {}'.format(farthest_left_nw_pixel))
     return farthest_left_nw_pixel[0]
 
 
@@ -133,7 +132,6 @@ def get_far_right_pixel(img):
                     break
     
     # Return value
-    print('Farthest right col => {}'.format(farthest_right_nw_pixel))
     return farthest_right_nw_pixel[0] 
 
 
@@ -150,18 +148,29 @@ def draw_bounding_lines(img, col_left, col_right):
     # Return Image
     return img
 
+def black_out_lines_text(img):
+    # Get Number of Columns
+    num_cols = img.shape[1]
+    # Create Count Object
+    Count = -1 
 
-def black_out_text_lines(img, farthest_left_nw_pixel, farthest_right_nw_pixel):
-    '''
-    Iterate each row.  If you hit a non-white pixel, conver the entire row to black
-    '''
-    num_rows = img.shape[0]
-
-    for row in range(0, num_rows - 1):
-
-        for pixel in img[row, :]:
-            if pixel > 25:
-                img[row : pixel] = 0
+    # Iterate Rows of Image
+    for row in img:
+        # Increase Count
+        Count += 1  
+        # Iterate Pixels in the Row
+        for pixel in row:
+            if pixel < 200:
+                # Assign all pixesl in row value = 0
+                img[Count] = 0
+                # Break loop
                 break
-
+    # Return Image
     return img
+
+
+
+
+
+
+

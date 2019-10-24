@@ -151,18 +151,17 @@ def draw_bounding_lines(img, col_left, col_right):
     return img
 
 
+def black_out_text_lines(img, farthest_left_nw_pixel, farthest_right_nw_pixel):
+    '''
+    Iterate each row.  If you hit a non-white pixel, conver the entire row to black
+    '''
+    num_rows = img.shape[0]
 
+    for row in range(0, num_rows - 1):
 
+        for pixel in img[row, :]:
+            if pixel > 25:
+                img[row : pixel] = 0
+                break
 
-
-
-
-
-
-
-
-
-
-
-
-
+    return img

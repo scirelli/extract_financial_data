@@ -66,19 +66,38 @@ def main_process_image():
     # Add Vertical Lines
     col_left = m1.get_far_left_pixel(img_blur)
     col_right = m1.get_far_right_pixel(img_blur)
+    img_vlines = m1.draw_bounding_lines(img_blur, col_left, col_right)
 
-    img = m1.draw_bounding_lines(img_blur, col_left, col_right)
+    # Black Out Text Lines
+    img_black_out_text = m1.black_out_text_lines(img_vlines, col_left, col_right)
 
-    cv2.imshow('test', img)
+    # Show Image
+    
+    cv2.imshow('test', img_black_out_text)
     cv2.waitKey(0)
-
-
-main_process_image()
-
+   
 
 
 
 
+path2image = dir_images + '/' + 'balance_sheet.jpg'
+img = cv2.imread(path2image)
+img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+img_blur = cv2.GaussianBlur(img_gray, (9,9), 0)
+num_cols = img_gray.shape[1]
+
+Count_ = -1 
+
+for row in img_blur:
+    Count_ += 1    
+    
+    for pixel in row:
+        if pixel < 200:
+            img_blur[Count_] = 0
+            break
+
+cv2.imshow('image', img_blur)
+cv2.waitKey(0)
 
 
 

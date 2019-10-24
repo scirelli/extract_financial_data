@@ -54,27 +54,26 @@ dir_txt_files   = r'/home/ccirelli2/Desktop/repositories/extract_financial_data/
         we should be able to source the lines individually and process them via OCR. 
 '''
 
-path2image = dir_images + '/' + 'balance_sheet.jpg'
 
-# Pre-Process Image
-img_read = cv2.imread(path2image)
-img_gray = cv2.cvtColor(img_read, cv2.COLOR_BGR2GRAY)
-img_blur = cv2.GaussianBlur(img_gray, (5,5), 0)
+def main_process_image():
+    path2image = dir_images + '/' + 'balance_sheet.jpg'
 
+    # Pre-Process Image
+    img_read = cv2.imread(path2image)
+    img_gray = cv2.cvtColor(img_read, cv2.COLOR_BGR2GRAY)
+    img_blur = cv2.GaussianBlur(img_gray, (5,5), 0)
 
+    # Add Vertical Lines
+    col_left = m1.get_far_left_pixel(img_blur)
+    col_right = m1.get_far_right_pixel(img_blur)
 
-# Add Vertical Lines
-col_left = m1.get_far_left_pixel(img_blur)
-col_right = m1.get_far_right_col(img_blur)
+    img = m1.draw_bounding_lines(img_blur, col_left, col_right)
 
-img = m1.draw_vertical_line(img_blur, col_left, col_right)
-
-cv2.imshow('test', img)
-cv2.waitKey(0)
-
-
+    cv2.imshow('test', img)
+    cv2.waitKey(0)
 
 
+main_process_image()
 
 
 

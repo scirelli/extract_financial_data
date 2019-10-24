@@ -80,69 +80,71 @@ def motion_blur(img):
     cv2.waitKey(0)
     
 
+
 def get_far_left_pixel(img):
 
+    # Get Image Dimensions
+    img_num_cols = img.shape[1]
+
     # Define Farthest Left Non-White Pixel
-    far_left_nonwhite_pixel = img.shape[1]
+    farthest_left_nw_pixel = [] 
 
-    # Iterate Matrix
-    for nparray in img:
-
-        # Col_count
-        Col_count = -1
-
-        # Iterate Each Array
-        for pixel in nparray:
-            # Increase Col_count
-            Col_count += 1
-
-            if pixel < 200 and Col_count < far_left_nonwhite_pixel:
-                far_left_nonwhite_pixel = Col_count
-                print(Col_count)
-                break
-
-    # Return pixel
-    print('Far left pixel => {}'.format(far_left_nonwhite_pixel))
-    return far_left_nonwhite_pixel
+    # Iterate the Columns From Left to Right
+    for col_num in range(0, img_num_cols - 1):
+        
+        # If our list is empty
+        if len(farthest_left_nw_pixel) == 0:
+            # Get Column in Question
+            col = img[: , col_num]
+            for pixel in col:
+                # If there is a non-white pixel
+                if pixel < 200:
+                    # Append the column number ot the list and break
+                    farthest_left_nw_pixel.append(col_num)
+                    break
+   
+    # Return value
+    print('Farthest left col => {}'.format(farthest_left_nw_pixel))
+    return farthest_left_nw_pixel[0]
 
 
 
-
-def get_far_right_col(img):
+def get_far_right_pixel(img):
 
     # Get Image Dimensions
     img_num_cols = img.shape[1]
 
     # Define Farthest Right Non-White Pixel
-    farthest_right_col = []
+    farthest_right_nw_pixel = []
 
-        
     # Iterate the Columns From Right To Left 
     for col_num in range(img_num_cols-1, 0, -1):
+    
         # If the list is empty
-        if len(farthest_right_col) == 0:
+        if len(farthest_right_nw_pixel) == 0:
+        
             # Index Column in question
             col = img[: , col_num - 1]
             for pixel in col:
                 # If there is a non-white pixel
                 if pixel < 200:
                     # Append the column number ot the list and break
-                    farthest_right_col.append(col_num)
+                    farthest_right_nw_pixel.append(col_num)
                     break
     
-    # Return pixel
-    print('Farthest right col => {}'.format(farthest_right_col))
-    return farthest_right_col[0] 
+    # Return value
+    print('Farthest right col => {}'.format(farthest_right_nw_pixel))
+    return farthest_right_nw_pixel[0] 
 
 
 
-def draw_vertical_line(img, col_left, col_right):
+def draw_bounding_lines(img, col_left, col_right):
     
     # Add Vertical Left:
-    v_left = img[:, col_left - 1: col_left] = 0
+    vl_left = img[:, col_left - 1: col_left] = 0
 
     # Add Vertical Right:
-    v_right = img[:, col_right - 1: col_right] = 0
+    vl_right = img[:, col_right - 1: col_right] = 0
 
 
     # Return Image

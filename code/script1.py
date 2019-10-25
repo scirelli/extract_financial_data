@@ -1,10 +1,16 @@
+#!/usr/bin/env python3
 # PROJECT DESCRIPTION _______________________________
 '''Morphological operations
 
 https://docs.opencv.org/3.4/dd/dd7/tutorial_morph_lines_detection.html
 
 
-Why don't you just code this yourself?
+    1.) We need to get the far edge where the text starts and define a verticle line.
+        We might achieve this by iterating the matrix and recording at which step the majority
+        of the pixels deviate from 255.  Then we can simply redefine the pixels at that
+        index to be all black.
+    2.) draw boxes or lines separating each line of data. Once we have these markers,
+        we should be able to source the lines individually and process them via OCR.
 '''
 
 # PYTHON MODULES ------------------------------------
@@ -19,34 +25,11 @@ import module1 as m1
 
 
 # IMPORT FILES --------------------------------------
-dir_data = r'/home/ccirelli2/Desktop/repositories/extract_financial_data/data'
-afile = 'fin1.pdf'
-path2file = dir_data + '/' + afile
-dir_images = r'/home/ccirelli2/Desktop/repositories/extract_financial_data/output/images'
-dir_txt_files = r'/home/ccirelli2/Desktop/repositories/extract_financial_data/output/text'
-
-# OCR PDF -------------------------------------------
-# m1.convert_pdf_2_image(path2file, 200, dir_images, 'jpg', True)
-
-# Convert Each Page to Text -------------------------
-'Save text files to output'
-# m1.convert_image2text(dir_images, dir_txt_files)
+dir_data = r'./data'
+dir_images = r'./output/images'
 
 
-# PROCESS IMAGE - OPENCV ----------------------------
-'''
-    1.) We need to get the far edge where the text starts and define a verticle line.
-        We might achieve this by iterating the matrix and recording at which step the majority
-        of the pixels deviate from 255.  Then we can simply redefine the pixels at that
-        index to be all black.
-    2.) draw boxes or lines separating each line of data. Once we have these markers,
-        we should be able to source the lines individually and process them via OCR.
-'''
-
-
-def main_process_image(show_edges=False):
-    path2image = dir_images + '/' + 'cash_flow_statement.jpg'
-
+def main_process_image(path2image=dir_images + '/' + 'cash_flow_statement.jpg', show_edges=False):
     # Pre-Process Image
     img_read = cv2.imread(path2image)
     img_gray = cv2.cvtColor(img_read, cv2.COLOR_BGR2GRAY)
@@ -103,4 +86,5 @@ def main_process_image(show_edges=False):
     return None
 
 
-main_process_image(False)
+if __name__ == '__main__':
+    main_process_image(False)

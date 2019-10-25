@@ -87,4 +87,4 @@ def main_process_image(path2image=dir_images + '/' + 'cash_flow_statement.jpg', 
 
 
 if __name__ == '__main__':
-    main_process_image(False)
+    main_process_image()
